@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boda Andrea e Iván | 21.02.2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES DE DISEÑO --- */
+        :root {
+            --color-bg: #F9F8F6;
+            --color-text: #4A4A4A;
+            --color-accent: #8FA895;
+            --color-gold: #B89E68;
+            --font-script: 'Great Vibes', cursive;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #d0d0d0;
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow: hidden; 
+        }
+
+        body.open { overflow-y: auto; }
+
+        /* --- OVERLAY DE BIENVENIDA --- */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--color-bg);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+        #overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .overlay-content { text-align: center; animation: float 3s ease-in-out infinite; }
+        .btn-enter {
+            background-color: var(--color-gold);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 50px;
+            margin-top: 20px;
+            transition: transform 0.2s;
+            box-shadow: 0 5px 20px rgba(184, 158, 104, 0.4);
+        }
+        .btn-enter:hover { transform: scale(1.05); }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .container {
+            background-color: var(--color-bg);
+            width: 95%;
+            max-width: 500px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 60px;
+        }
+
+        /* --- BARRA FLOTANTE --- */
+        .floating-bar {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            display: flex; flex-direction: column; gap: 15px;
+            z-index: 100;
+            opacity: 0; transition: opacity 1s ease;
+        }
+        .fab {
+            width: 50px; height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--color-gold);
+            font-size: 1.2rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .fab:hover { transform: scale(1.1); }
+        .fab.music-playing { animation: spin 3s linear infinite; background-color: var(--color-gold); color: white; }
+        .fab.whatsapp { color: #25D366; }
+        .fab.maps { color: #4285F4; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* --- ESTILOS GENERALES Y ANIMACIONES --- */
+        .animate-hidden { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .animate-show { opacity: 1; transform: translateY(0); }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* FOTO CIRCULAR */
+        .couple-photo-container { text-align: center; padding-top: 40px; background-color: var(--color-bg); }
+        .couple-photo {
+            width: 220px; height: 220px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--color-gold);
+            box-shadow: 0 10px 25px rgba(184, 158, 104, 0.2);
+            filter: contrast(105%) sepia(5%);
+        }
+
+        .section-img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .decoration { text-align: center; color: var(--color-accent); font-size: 1.8rem; padding: 15px 0; opacity: 0.7; }
+        
+        h1 { font-family: var(--font-script); font-size: 3.5rem; color: var(--color-gold); text-align: center; margin: 10px 0 20px 0; line-height: 1.1; }
+        h2 { font-family: var(--font-serif); text-transform: uppercase; letter-spacing: 4px; font-size: 1.1rem; text-align: center; margin-bottom: 10px; color: var(--color-text); font-weight: 600; }
+        h3 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--color-gold); margin-bottom: 15px; }
+        p { font-size: 0.95rem; margin-bottom: 15px; font-weight: 300; }
+        section { padding: 40px 30px; text-align: center; }
+
+        .quote-section { background-color: #F2F0EB; font-family: var(--font-serif); padding: 60px 40px; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .quote-text { font-size: 1.2rem; font-style: italic; color: #555; line-height: 1.8; }
+        .verse-ref { display: block; margin-top: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; color: var(--color-gold); }
+
+        .date-big { font-family: var(--font-serif); font-size: 2.2rem; letter-spacing: 3px; margin: 30px 0; color: var(--color-text); font-weight: 600; }
+        .countdown { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .time-box { display: flex; flex-direction: column; align-items: center; min-width: 65px; background-color: white; padding: 10px 5px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .time-val { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600; color: var(--color-accent); }
+        .time-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; color: #999; }
+
+        .btn { display: inline-block; padding: 14px 35px; background-color: var(--color-accent); color: white; text-decoration: none; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; border-radius: 50px; transition: all 0.3s ease; margin-top: 25px; border: 1px solid var(--color-accent); font-weight: 500; box-shadow: 0 4px 15px rgba(143, 168, 149, 0.4); }
+        .btn:hover { background-color: transparent; color: var(--color-accent); box-shadow: none; transform: translateY(2px); }
+        .btn-outline { background-color: transparent; color: var(--color-gold); border: 1px solid var(--color-gold); box-shadow: none; }
+        .btn-outline:hover { background-color: var(--color-gold); color: white; }
+        .icon-box { margin-bottom: 20px; color: var(--color-gold); font-size: 2.5rem; }
+        .rsvp-final { background-color: var(--color-accent); color: white; padding-bottom: 60px; }
+        .rsvp-final h3, .rsvp-final p { color: white; }
+
+        /* --- ESTILOS DEL ITINERARIO --- */
+        .timeline { position: relative; max-width: 300px; margin: 0 auto; text-align: left; padding-left: 20px; }
+        .timeline::before { content: ''; position: absolute; top: 10px; bottom: 10px; left: 29px; width: 1px; background-color: #ddd; }
+        .timeline-item { position: relative; margin-bottom: 40px; padding-left: 50px; }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-dot { position: absolute; left: 5px; top: 5px; width: 10px; height: 10px; background-color: var(--color-accent); border-radius: 50%; z-index: 2; box-shadow: 0 0 0 5px white; }
+        .timeline-time { font-family: var(--font-serif); font-weight: 600; color: var(--color-gold); font-size: 1.1rem; display: block; margin-bottom: 2px; }
+        .timeline-title { font-weight: 500; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+
+    </style>
+</head>
+<body>
+
+    <div id="overlay">
+        <div class="overlay-content">
+            <h2 style="color: var(--color-gold);">Andrea & Iván</h2>
+            <p style="margin-bottom: 30px;">Tenemos una invitación especial para ti</p>
+            <button class="btn-enter" onclick="enterSite()">ABRIR INVITACIÓN</button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+    <div class="floating-bar" id="floatingBar">
+        <div class="fab" id="musicControl" onclick="toggleMusic()"><span>🎵</span></div>
+        <a href="https://wa.me/573017864287?text=¡Hola!%20Confirmo%20asistencia." target="_blank" class="fab whatsapp"><span>💬</span></a>
+        <a href="http://googleusercontent.com/maps.google.com/?q=calle+25+B+%23+70B+50" target="_blank" class="fab maps"><span>📍</span></a>
+    </div>
+
+    <div class="container">
+        
+        <div class="couple-photo-container">
+             <img src="https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=1000&auto=format&fit=crop" alt="Andrea e Iván" class="couple-photo animate-hidden">
+        </div>
+
+        <section style="padding-top: 20px;">
+            <div class="decoration animate-hidden">🌿</div>
+            <h2 class="animate-hidden delay-200">¡Nos Casamos!</h2>
+            <h1 class="animate-hidden delay-400">Andrea e Iván</h1>
+            <p class="animate-hidden delay-400">Con la bendición de Dios y nuestros padres</p>
+        </section>
+
+        <section class="quote-section animate-hidden">
+            <p class="quote-text">
+                "Más vale dos que uno, porque obtienen más fruto de su esfuerzo. 
+                Si caen, el uno levanta el otro... ¡la cuerda de tres hilos no se rompe fácilmente!"
+            </p>
+            <span class="verse-ref">Eclesiastés 4:9-12</span>
+        </section>
+
+        <section class="animate-hidden">
+            <h3>SAVE THE DATE</h3>
+            <div class="date-big">21 . 02 . 2026</div>
+            <p>Contando los días:</p>
+            <div id="countdown" class="countdown">
+                <div class="time-box"><span class="time-val" id="days">00</span><span class="time-label">Días</span></div>
+                <div class="time-box"><span class="time-val" id="hours">00</span><span class="time-label">Hs</span></div>
+                <div class="time-box"><span class="time-val" id="minutes">00</span><span class="time-label">Min</span></div>
+                <div class="time-box"><span class="time-val" id="seconds">00</span><span class="time-label">Seg</span></div>
+            </div>
+        </section>
+
+        <section class="animate-hidden">
+            <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=800&auto=format&fit=crop" alt="Lugar" class="section-img">
+            <h3>CEREMONIA & RECEPCIÓN</h3>
+            <div class="icon-box">💍</div>
+            <div style="margin: 30px 0;">
+                <p><strong style="color: var(--color-gold);">HORA</strong><br> 4:00 PM</p>
+                <br>
+                <p><strong style="color: var(--color-gold);">LUGAR</strong><br> Edificio Gran Reserva de Mallorca</p>
+                <p style="font-size: 0.9rem; color: #777;">Calle 25 B # 70B 50</p>
+            </div>
+            <a href="http://googleusercontent.com/maps.google.com/?q=calle+25+B+%23+70B+50" target="_blank" class="btn btn-outline">Ver Mapa</a>
+        </section>
+
+        <section class="animate-hidden">
+             <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                <div style="flex: 1; min-width: 200px;" class="animate-hidden delay-200">
+                    <div class="icon-box">👔</div>
+                    <h3>Código de Vestir</h3>
+                    <p>Traje Formal</p>
+                </div>
+                <div style="flex: 1; min-width: 200px;" class="animate-hidden delay-400">
+                    <div class="icon-box">✉️</div>
+                    <h3>Regalos</h3>
+                    <p>Lluvia de Sobres</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="animate-hidden" style="background-color: #fafafa;">
+            <h3>ITINERARIO</h3>
+            <div style="margin-bottom: 30px; font-size: 2rem;">🕰️</div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-time">4:00 PM</span>
+                    <div class="timeline-title">Ceremonia Civil</div>
+                    <p style="font-size: 0.85rem; margin:0;">El "Sí, acepto"</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-time">5:00 PM</span>
+                    <div class="timeline-title">Brindis & Fotos</div>
+                    <p style="font-size: 0.85rem; margin:0;">Celebrando el amor</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-time">6:30 PM</span>
+                    <div class="timeline-title">Cena</div>
+                    <p style="font-size: 0.85rem; margin:0;">Buen provecho</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-time">8:00 PM</span>
+                    <div class="timeline-title">Fiesta</div>
+                    <p style="font-size: 0.85rem; margin:0;">¡A bailar!</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="rsvp-final animate-hidden">
+            <div class="decoration" style="color: white;">🌿</div>
+            <h3>CONFIRMACIÓN</h3>
+            <p style="max-width: 80%; margin: 0 auto 20px auto;">Esperamos contar contigo.</p>
+            <p style="font-size: 0.9rem; margin-bottom: 30px; opacity: 0.9;">Por favor confirmar antes del <strong>21 de enero de 2026</strong>.</p>
+            <a href="https://wa.me/573017864287?text=Hola,%20confirmo%20asistencia%20a%20la%20boda%20de%20Andrea%20e%20Iván." target="_blank" class="btn" style="background-color: white; color: var(--color-accent); border: none;">WhatsApp</a>
+             <div class="decoration" style="color: white; margin-top: 30px;">🌿</div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- LOGICA DE AUDIO NATIVO ---
+        var audio = document.getElementById("audioPlayer");
+        var isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                document.getElementById('musicControl').classList.remove('music-playing');
+                document.getElementById('musicControl').innerHTML = "<span>🔇</span>";
+                isPlaying = false;
+            } else {
+                audio.play();
+                document.getElementById('musicControl').classList.add('music-playing');
+                document.getElementById('musicControl').innerHTML = "<span>🎵</span>";
+                isPlaying = true;
+            }
+        }
+
+        // --- ENTRADA AL SITIO ---
+        function enterSite() {
+            document.getElementById('overlay').classList.add('hidden');
+            document.body.classList.add('open');
+            document.getElementById('floatingBar').style.opacity = '1';
+            
+            // Iniciar animaciones
+            initAnimations();
+            
+            // Iniciar Audio
+            audio.volume = 0.5; // Volumen al 50%
+            audio.play().then(() => {
+                isPlaying = true;
+                document.getElementById('musicControl').classList.add('music-playing');
+            }).catch(error => {
+                console.log("El navegador bloqueó el autoplay. El usuario debe dar play manual.", error);
+            });
+        }
+
+        // --- ANIMACIONES ---
+        function initAnimations() {
+            const hiddenElements = document.querySelectorAll('.animate-hidden');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('animate-show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            hiddenElements.forEach(el => observer.observe(el));
+        }
+
+        // --- CUENTA REGRESIVA ---
+        const weddingDate = new Date("Feb 21, 2026 16:00:00").getTime();
+        setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }, 1000);
+    </script>
+</body>
+</html>
