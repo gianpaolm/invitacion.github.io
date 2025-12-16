@@ -14,8 +14,9 @@
         :root {
             --color-bg: #F9F8F6;
             --color-text: #4A4A4A;
-            --color-accent: #8FA895;
-            --color-gold: #B89E68;
+            --color-accent: #8FA895; /* Verde Salvia */
+            --color-accent-dark: #748c7a;
+            --color-gold: #B89E68; /* Dorado */
             --font-script: 'Great Vibes', cursive;
             --font-serif: 'Cormorant Garamond', serif;
             --font-sans: 'Montserrat', sans-serif;
@@ -36,37 +37,166 @@
 
         body.open { overflow-y: auto; }
 
-        /* --- OVERLAY DE BIENVENIDA --- */
+        /* --- 1. OVERLAY Y ANIMACIÓN DINÁMICA DEL SOBRE --- */
         #overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--color-bg);
             z-index: 9999;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 1s ease, visibility 1s ease;
+            transition: opacity 1s ease 0.8s, visibility 1s ease 0.8s; /* Retraso para ver la animacion final */
         }
-        #overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .overlay-content { text-align: center; animation: float 3s ease-in-out infinite; }
-        .btn-enter {
-            background-color: var(--color-gold);
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            cursor: pointer;
-            border-radius: 50px;
-            margin-top: 20px;
-            transition: transform 0.2s;
-            box-shadow: 0 5px 20px rgba(184, 158, 104, 0.4);
+        
+        #overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
-        .btn-enter:hover { transform: scale(1.05); }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
+        /* ENVOLTORIO PRINCIPAL */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            /* Flotación más dinámica con rotación */
+            animation: floatDynamic 4s ease-in-out infinite;
+        }
+        .envelope-wrapper.open {
+             animation: none; /* Detiene la flotación al abrir */
+        }
+
+        /* EL SOBRE (Cuerpo) */
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: var(--color-accent-dark);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        /* Cuando se abre, el sobre vacío cae un poco y se desvanece */
+        .envelope-wrapper.open .envelope {
+            transform: translateY(50px) scale(0.95);
+            opacity: 0;
+            transition-delay: 0.6s; /* Espera a que salga la carta */
+        }
+
+        /* LA CARTA INTERIOR (Previsualización) */
+        .card-preview {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            /* Estado inicial: un poco hundida y pequeña */
+            transform: translateX(-50%) translateY(10px) scale(0.9);
+            width: 260px;
+            height: 180px;
+            background-color: white;
+            z-index: 1;
+            /* Transición super suave para la salida */
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto elástico */
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 20px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+        .card-preview h2 {
+            font-family: var(--font-script);
+            font-size: 2rem;
+            color: var(--color-gold);
+        }
+
+        /* SOLAPA SUPERIOR */
+        .flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 110px solid var(--color-accent);
+            transform-origin: top;
+            /* Transición con rebote al abrir */
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), z-index 0.4s;
+            z-index: 5;
+        }
+
+        /* BOLSILLO INFERIOR */
+        .pocket {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 150px solid var(--color-accent);
+            border-right: 150px solid var(--color-accent-dark);
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-bottom-color: var(--color-accent);
+            z-index: 4;
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* SELLO DE LACRE */
+        .wax-seal {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px; height: 50px;
+            background-color: var(--color-gold);
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 6;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease-out;
+        }
+
+        /* --- ESTADOS DE ANIMACIÓN ACTIVOS --- */
+        
+        /* 1. El sello explota al hacer clic */
+        .wax-seal.popped {
+            transform: translate(-50%, -50%) scale(2); /* Se agranda */
+            opacity: 0; /* Se desvanece */
+        }
+
+        /* 2. La solapa se abre con rebote */
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        /* 3. La carta sale dramáticamente hacia arriba y crece */
+        .envelope-wrapper.open .card-preview {
+            transform: translateX(-50%) translateY(-120px) scale(1); /* Sale mucho más arriba y tamaño full */
+            transition-delay: 0.3s; /* Espera un poco a que la solapa abra */
+            z-index: 10; /* Asegura que quede encima de todo al salir */
+        }
+
+        .click-hint {
+            color: var(--color-text);
+            margin-top: 60px; /* Más espacio por la sombra dinámica */
+            text-align: center;
+            font-family: var(--font-serif);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            animation: pulse 2s infinite;
+        }
+
+        /* Nuevas Animaciones Keyframes */
+        @keyframes floatDynamic {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); } /* Flotación con leve rotación */
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+
+        /* --- CONTENEDOR PRINCIPAL Y RESTO DEL CSS (Igual que antes) --- */
         .container {
             background-color: var(--color-bg);
             width: 95%;
@@ -77,72 +207,34 @@
             position: relative;
             padding-bottom: 60px;
         }
-
-        /* --- BARRA FLOTANTE --- */
-        .floating-bar {
-            position: fixed;
-            bottom: 20px; right: 20px;
-            display: flex; flex-direction: column; gap: 15px;
-            z-index: 100;
-            opacity: 0; transition: opacity 1s ease;
-        }
-        .fab {
-            width: 50px; height: 50px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: var(--color-gold);
-            font-size: 1.2rem;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
+        .floating-bar { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 100; opacity: 0; transition: opacity 1s ease; }
+        .fab { width: 50px; height: 50px; background-color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s ease; text-decoration: none; color: var(--color-gold); font-size: 1.2rem; border: 1px solid rgba(0,0,0,0.05); }
         .fab:hover { transform: scale(1.1); }
         .fab.music-playing { animation: spin 3s linear infinite; background-color: var(--color-gold); color: white; }
-        .fab.whatsapp { color: #25D366; }
+        .fab.whatsapp svg { width: 28px; height: 28px; fill: #25D366; }
         .fab.maps { color: #4285F4; }
-
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        /* --- ESTILOS GENERALES Y ANIMACIONES --- */
         .animate-hidden { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .animate-show { opacity: 1; transform: translateY(0); }
         .delay-200 { transition-delay: 200ms; }
         .delay-400 { transition-delay: 400ms; }
-
-        /* FOTO CIRCULAR */
         .couple-photo-container { text-align: center; padding-top: 40px; background-color: var(--color-bg); }
-        .couple-photo {
-            width: 220px; height: 220px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid var(--color-gold);
-            box-shadow: 0 10px 25px rgba(184, 158, 104, 0.2);
-            filter: contrast(105%) sepia(5%);
-        }
-
+        .couple-photo { width: 220px; height: 220px; object-fit: cover; border-radius: 50%; border: 3px solid var(--color-gold); box-shadow: 0 10px 25px rgba(184, 158, 104, 0.2); filter: contrast(105%) sepia(5%); }
         .section-img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
         .decoration { text-align: center; color: var(--color-accent); font-size: 1.8rem; padding: 15px 0; opacity: 0.7; }
-        
         h1 { font-family: var(--font-script); font-size: 3.5rem; color: var(--color-gold); text-align: center; margin: 10px 0 20px 0; line-height: 1.1; }
         h2 { font-family: var(--font-serif); text-transform: uppercase; letter-spacing: 4px; font-size: 1.1rem; text-align: center; margin-bottom: 10px; color: var(--color-text); font-weight: 600; }
         h3 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--color-gold); margin-bottom: 15px; }
         p { font-size: 0.95rem; margin-bottom: 15px; font-weight: 300; }
         section { padding: 40px 30px; text-align: center; }
-
         .quote-section { background-color: #F2F0EB; font-family: var(--font-serif); padding: 60px 40px; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); }
         .quote-text { font-size: 1.2rem; font-style: italic; color: #555; line-height: 1.8; }
         .verse-ref { display: block; margin-top: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; color: var(--color-gold); }
-
         .date-big { font-family: var(--font-serif); font-size: 2.2rem; letter-spacing: 3px; margin: 30px 0; color: var(--color-text); font-weight: 600; }
         .countdown { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
         .time-box { display: flex; flex-direction: column; align-items: center; min-width: 65px; background-color: white; padding: 10px 5px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .time-val { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600; color: var(--color-accent); }
         .time-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; color: #999; }
-
         .btn { display: inline-block; padding: 14px 35px; background-color: var(--color-accent); color: white; text-decoration: none; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; border-radius: 50px; transition: all 0.3s ease; margin-top: 25px; border: 1px solid var(--color-accent); font-weight: 500; box-shadow: 0 4px 15px rgba(143, 168, 149, 0.4); }
         .btn:hover { background-color: transparent; color: var(--color-accent); box-shadow: none; transform: translateY(2px); }
         .btn-outline { background-color: transparent; color: var(--color-gold); border: 1px solid var(--color-gold); box-shadow: none; }
@@ -150,8 +242,6 @@
         .icon-box { margin-bottom: 20px; color: var(--color-gold); font-size: 2.5rem; }
         .rsvp-final { background-color: var(--color-accent); color: white; padding-bottom: 60px; }
         .rsvp-final h3, .rsvp-final p { color: white; }
-
-        /* --- ESTILOS DEL ITINERARIO --- */
         .timeline { position: relative; max-width: 300px; margin: 0 auto; text-align: left; padding-left: 20px; }
         .timeline::before { content: ''; position: absolute; top: 10px; bottom: 10px; left: 29px; width: 1px; background-color: #ddd; }
         .timeline-item { position: relative; margin-bottom: 40px; padding-left: 50px; }
@@ -165,44 +255,47 @@
 <body>
 
     <div id="overlay">
-        <div class="overlay-content">
-            <h2 style="color: var(--color-gold);">Andrea & Iván</h2>
-            <p style="margin-bottom: 30px;">Tenemos una invitación especial para ti</p>
-            <button class="btn-enter" onclick="enterSite()">ABRIR INVITACIÓN</button>
+        <div style="display: flex; flex-direction: column; align-items: center; perspective: 1000px;">
+            <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+                <div class="envelope">
+                    <div class="card-preview">
+                        <h2>A & I</h2>
+                    </div>
+                    <div class="flap"></div>
+                    <div class="pocket"></div>
+                    <div class="wax-seal" id="waxSeal">❤️</div>
+                </div>
+            </div>
+            <p class="click-hint">Haz clic en el sello para abrir</p>
         </div>
     </div>
 
     <audio id="audioPlayer" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        Tu navegador no soporta audio.
     </audio>
+
     <div class="floating-bar" id="floatingBar">
         <div class="fab" id="musicControl" onclick="toggleMusic()"><span>🎵</span></div>
-        <a href="https://wa.me/573017864287?text=¡Hola!%20Confirmo%20asistencia." target="_blank" class="fab whatsapp"><span>💬</span></a>
+        <a href="https://wa.me/573017864287?text=¡Hola!%20Confirmo%20asistencia." target="_blank" class="fab whatsapp">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 2C8.269 2 2 8.269 2 16c0 2.502.662 4.908 1.914 7.031L2.129 30.12l7.195-1.89C11.362 29.351 13.633 30 16 30c7.731 0 14-6.269 14-14S23.731 2 16 2zm0 25.5c-2.115 0-4.135-.615-5.918-1.68l-4.145 1.089 1.107-4.041C5.875 21.066 5.25 18.6 5.25 16c0-5.939 4.811-10.75 10.75-10.75S26.75 10.061 26.75 16 21.939 27.5 16 27.5zM21.928 20.3c-.246-.123-1.455-.718-1.681-.8s-.39-.123-.553.123c-.164.246-.636.8-.779.964-.144.164-.287.185-.533.062s-1.042-.384-1.983-1.224c-.742-.661-1.242-1.478-1.386-1.724-.144-.246-.015-.379.108-.5.111-.11.246-.287.369-.43s.164-.246.246-.41c.082-.164.041-.308-.02-.43s-.553-1.332-.758-1.824c-.198-.475-.4-.41-.553-.418-.144-.008-.308-.008-.472-.008-.164 0-.43.062-.656.308s-.861.84-.861 2.05c0 1.209.881 2.378 1.004 2.542.123.164 1.732 2.645 4.197 3.708 1.633.705 2.269.705 3.097.587.917-.131 2.227-1.127 2.227-2.227-.001-1.1-1.21-1.203-1.456-1.326z"/></svg>
+        </a>
         <a href="https://maps.app.goo.gl/BxVD2zrK2J2Hd874A" target="_blank" class="fab maps"><span>📍</span></a>
     </div>
 
     <div class="container">
-        
         <div class="couple-photo-container">
              <img src="https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=1000&auto=format&fit=crop" alt="Andrea e Iván" class="couple-photo animate-hidden">
         </div>
-
         <section style="padding-top: 20px;">
             <div class="decoration animate-hidden">🌿</div>
             <h2 class="animate-hidden delay-200">¡Nos Casamos!</h2>
             <h1 class="animate-hidden delay-400">Andrea e Iván</h1>
             <p class="animate-hidden delay-400">Con la bendición de Dios y nuestros padres</p>
         </section>
-
         <section class="quote-section animate-hidden">
-            <p class="quote-text">
-                "Más vale dos que uno, porque obtienen más fruto de su esfuerzo. 
-                Si caen, el uno levanta el otro... ¡la cuerda de tres hilos no se rompe fácilmente!"
-            </p>
+            <p class="quote-text">"Más vale dos que uno, porque obtienen más fruto de su esfuerzo. Si caen, el uno levanta el otro... ¡la cuerda de tres hilos no se rompe fácilmente!"</p>
             <span class="verse-ref">Eclesiastés 4:9-12</span>
         </section>
-
         <section class="animate-hidden">
             <h3>SAVE THE DATE</h3>
             <div class="date-big">21 . 02 . 2026</div>
@@ -214,7 +307,6 @@
                 <div class="time-box"><span class="time-val" id="seconds">00</span><span class="time-label">Seg</span></div>
             </div>
         </section>
-
         <section class="animate-hidden">
             <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=800&auto=format&fit=crop" alt="Lugar" class="section-img">
             <h3>CEREMONIA & RECEPCIÓN</h3>
@@ -227,7 +319,6 @@
             </div>
             <a href="https://maps.app.goo.gl/BxVD2zrK2J2Hd874A" target="_blank" class="btn btn-outline">Ver Mapa</a>
         </section>
-
         <section class="animate-hidden">
              <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
                 <div style="flex: 1; min-width: 200px;" class="animate-hidden delay-200">
@@ -242,39 +333,16 @@
                 </div>
             </div>
         </section>
-
         <section class="animate-hidden" style="background-color: #fafafa;">
             <h3>ITINERARIO</h3>
             <div style="margin-bottom: 30px; font-size: 2rem;">🕰️</div>
-            
             <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-time">4:00 PM</span>
-                    <div class="timeline-title">Ceremonia Civil</div>
-                    <p style="font-size: 0.85rem; margin:0;">El "Sí, acepto"</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-time">5:00 PM</span>
-                    <div class="timeline-title">Brindis & Fotos</div>
-                    <p style="font-size: 0.85rem; margin:0;">Celebrando el amor</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-time">6:30 PM</span>
-                    <div class="timeline-title">Cena</div>
-                    <p style="font-size: 0.85rem; margin:0;">Buen provecho</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-time">8:00 PM</span>
-                    <div class="timeline-title">Fiesta</div>
-                    <p style="font-size: 0.85rem; margin:0;">¡A bailar!</p>
-                </div>
+                <div class="timeline-item"><div class="timeline-dot"></div><span class="timeline-time">4:00 PM</span><div class="timeline-title">Ceremonia Civil</div><p style="font-size: 0.85rem; margin:0;">El "Sí, acepto"</p></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><span class="timeline-time">5:00 PM</span><div class="timeline-title">Brindis & Fotos</div><p style="font-size: 0.85rem; margin:0;">Celebrando el amor</p></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><span class="timeline-time">6:30 PM</span><div class="timeline-title">Cena</div><p style="font-size: 0.85rem; margin:0;">Buen provecho</p></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><span class="timeline-time">8:00 PM</span><div class="timeline-title">Fiesta</div><p style="font-size: 0.85rem; margin:0;">¡A bailar!</p></div>
             </div>
         </section>
-
         <section class="rsvp-final animate-hidden">
             <div class="decoration" style="color: white;">🌿</div>
             <h3>CONFIRMACIÓN</h3>
@@ -283,7 +351,6 @@
             <a href="https://wa.me/573017864287?text=Hola,%20confirmo%20asistencia%20a%20la%20boda%20de%20Andrea%20e%20Iván." target="_blank" class="btn" style="background-color: white; color: var(--color-accent); border: none;">WhatsApp</a>
              <div class="decoration" style="color: white; margin-top: 30px;">🌿</div>
         </section>
-
     </div>
 
     <script>
@@ -305,26 +372,32 @@
             }
         }
 
-        // --- ENTRADA AL SITIO ---
-        function enterSite() {
-            document.getElementById('overlay').classList.add('hidden');
-            document.body.classList.add('open');
-            document.getElementById('floatingBar').style.opacity = '1';
+        // --- ABRIR SOBRE DINÁMICO Y ENTRAR AL SITIO ---
+        function openEnvelope() {
+            // 1. Explotar el sello
+            document.getElementById('waxSeal').classList.add('popped');
             
-            // Iniciar animaciones
-            initAnimations();
+            // 2. Iniciar secuencia de apertura del sobre
+            document.getElementById('envelopeWrapper').classList.add('open');
             
-            // Iniciar Audio
-            audio.volume = 0.5; // Volumen al 50%
-            audio.play().then(() => {
-                isPlaying = true;
-                document.getElementById('musicControl').classList.add('music-playing');
-            }).catch(error => {
-                console.log("El navegador bloqueó el autoplay. El usuario debe dar play manual.", error);
-            });
+            // 3. Esperar a que termine la animación dramática antes de quitar el overlay
+            setTimeout(() => {
+                document.getElementById('overlay').classList.add('hidden');
+                document.body.classList.add('open');
+                document.getElementById('floatingBar').style.opacity = '1';
+                
+                initAnimations();
+                
+                // Iniciar Audio
+                audio.volume = 0.5; 
+                audio.play().then(() => {
+                    isPlaying = true;
+                    document.getElementById('musicControl').classList.add('music-playing');
+                }).catch(error => { console.log("Autoplay bloqueado."); });
+            }, 1500); // Espera más larga para apreciar la animación
         }
 
-        // --- ANIMACIONES ---
+        // --- ANIMACIONES SCROLL ---
         function initAnimations() {
             const hiddenElements = document.querySelectorAll('.animate-hidden');
             const observer = new IntersectionObserver((entries) => {
