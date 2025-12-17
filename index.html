@@ -14,9 +14,9 @@
         :root {
             --color-bg: #F9F8F6;
             --color-text: #4A4A4A;
-            --color-sage: #9AB09C; /* Verde Salvia Referencia */
+            --color-sage: #9AB09C;
             --color-sage-dark: #7E9480; 
-            --color-gold: #C5A059; /* Dorado */
+            --color-gold: #C5A059;
             --font-script: 'Great Vibes', cursive;
             --font-serif: 'Cormorant Garamond', serif;
             --font-sans: 'Montserrat', sans-serif;
@@ -51,11 +51,7 @@
         /* Estilos del Sobre */
         .envelope-wrapper { position: relative; margin-top: 20px; cursor: pointer; }
         .envelope { position: relative; width: 320px; height: 220px; background-color: var(--color-sage); border-radius: 6px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); display: flex; justify-content: center; }
-        
-        /* Elementos internos */
         .card-group { position: absolute; bottom: 0; width: 100%; height: 100%; display: flex; justify-content: center; z-index: 1; }
-        
-        /* Carta Principal */
         .card-main { position: absolute; bottom: 10px; width: 280px; height: 200px; background: white; border-radius: 8px; text-align: center; padding: 20px 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(20px); }
         .card-main h3 { font-family: var(--font-script); font-size: 2rem; margin: 0; color: var(--color-text); }
         .card-main p { font-family: var(--font-serif); font-size: 0.9rem; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; color: #888; }
@@ -70,13 +66,10 @@
         .card-ticket span { font-family: var(--font-serif); font-size: 0.7rem; color: #666; }
         .card-ticket strong { font-family: var(--font-serif); font-size: 0.9rem; color: var(--color-gold); line-height: 1; margin-top: 5px; }
         
-        /* Partes del sobre */
         .pocket { position: absolute; bottom: 0; left: 0; width: 0; height: 0; border-left: 160px solid var(--color-sage); border-right: 160px solid var(--color-sage-dark); border-top: 110px solid transparent; border-bottom: 110px solid transparent; border-bottom-color: var(--color-sage); z-index: 4; border-radius: 0 0 6px 6px; }
         .flap { position: absolute; top: 0; left: 0; width: 0; height: 0; border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 130px solid var(--color-sage-dark); transform-origin: top; transition: transform 0.6s ease-in-out, z-index 0.4s; z-index: 5; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
         .wax-seal { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); width: 55px; height: 55px; background: radial-gradient(circle at 30% 30%, #ffd700, #C5A059); border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.4); z-index: 6; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: rgba(255,255,255,0.8); cursor: pointer; transition: transform 0.3s; }
         .wax-seal:hover { transform: translate(-50%, -50%) scale(1.1); }
-        
-        /* Animaciones Apertura */
         .envelope-wrapper.open .wax-seal { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
         .envelope-wrapper.open .flap { transform: rotateX(180deg); z-index: 0; }
         .envelope-wrapper.open .card-main { transform: translateY(-120px); z-index: 2; }
@@ -90,7 +83,6 @@
             overflow: hidden; position: relative; padding-bottom: 60px;
         }
 
-        /* Otros Estilos */
         .floating-bar { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 100; opacity: 0; transition: opacity 1s ease; }
         .fab { width: 50px; height: 50px; background-color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s ease; text-decoration: none; color: var(--color-gold); font-size: 1.2rem; border: 1px solid rgba(0,0,0,0.05); }
         .fab:hover { transform: scale(1.1); }
@@ -103,6 +95,7 @@
         .delay-200 { transition-delay: 200ms; }
         .delay-400 { transition-delay: 400ms; }
         .couple-photo-container { text-align: center; padding-top: 40px; background-color: var(--color-bg); }
+        
         /* FOTO PRINCIPAL REDONDA */
         .couple-photo { width: 220px; height: 220px; object-fit: cover; border-radius: 50%; border: 3px solid var(--color-gold); box-shadow: 0 10px 25px rgba(184, 158, 104, 0.2); filter: contrast(105%) sepia(5%); }
         .section-img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
@@ -150,7 +143,7 @@
                         <p style="font-size: 0.6rem; margin-top: 60px;">¡Nos Casamos!</p>
                     </div>
                     <div class="card-photo">
-                        <img src="Boda.jpg" alt="Foto" onerror="this.src='https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=300&auto=format&fit=crop'">
+                        <img src="boda.jpg" alt="Foto" onerror="this.src='https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=300&auto=format&fit=crop'">
                     </div>
                     <div class="card-ticket">
                         <span>Pase para:</span>
@@ -168,7 +161,7 @@
     </div>
 
     <audio id="audioPlayer" loop>
-        <source src="Boda.mp3" type="audio/mpeg">
+        <source src="boda.mp3" type="audio/mpeg">
     </audio>
 
     <div class="floating-bar" id="floatingBar">
@@ -182,7 +175,7 @@
     <div class="container">
         
         <div class="couple-photo-container">
-             <img src="Boda.jpg" alt="Andrea e Iván" class="couple-photo animate-hidden" onerror="this.src='https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=1000&auto=format&fit=crop'">
+             <img src="boda.jpg" alt="Andrea e Iván" class="couple-photo animate-hidden" onerror="this.src='https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=1000&auto=format&fit=crop'">
         </div>
         
         <section style="padding-top: 20px;">
