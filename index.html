@@ -14,9 +14,9 @@
         :root {
             --color-bg: #F9F8F6;
             --color-text: #4A4A4A;
-            --color-sage: #9AB09C;
-            --color-sage-dark: #7E9480; 
-            --color-gold: #C5A059;
+            --color-sage: #9AB09C; /* Verde Salvia Referencia */
+            --color-sage-dark: #7E9480; /* Sombra sobre */
+            --color-gold: #C5A059; /* Dorado */
             --font-script: 'Great Vibes', cursive;
             --font-serif: 'Cormorant Garamond', serif;
             --font-sans: 'Montserrat', sans-serif;
@@ -37,52 +37,205 @@
 
         body.open { overflow-y: auto; }
 
-        /* --- OVERLAY PREMIUM (SOBRE) --- */
+        /* --- 1. OVERLAY PREMIUM (SOBRE) --- */
         #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #fcfcfc; background-image: radial-gradient(#e6e6e6 1px, transparent 1px); background-size: 20px 20px;
-            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 1.2s ease 1s, visibility 1.2s ease 1s;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #fcfcfc; /* Fondo muy limpio */
+            background-image: radial-gradient(#e6e6e6 1px, transparent 1px);
+            background-size: 20px 20px; /* Textura sutil de puntos */
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.2s ease 1s, visibility 1.2s ease 1s; /* Retraso para ver animación */
         }
-        #overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .intro-names { font-family: var(--font-script); font-size: 3rem; color: var(--color-text); margin-top: 40px; opacity: 0; animation: fadeInText 1.5s ease forwards 0.5s; }
+        
+        #overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Título exterior bajo el sobre */
+        .intro-names {
+            font-family: var(--font-script);
+            font-size: 3rem;
+            color: var(--color-text);
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeInText 1.5s ease forwards 0.5s;
+        }
         @keyframes fadeInText { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(20px); } }
 
-        /* Estilos del Sobre */
-        .envelope-wrapper { position: relative; margin-top: 20px; cursor: pointer; }
-        .envelope { position: relative; width: 320px; height: 220px; background-color: var(--color-sage); border-radius: 6px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); display: flex; justify-content: center; }
-        .card-group { position: absolute; bottom: 0; width: 100%; height: 100%; display: flex; justify-content: center; z-index: 1; }
-        .card-main { position: absolute; bottom: 10px; width: 280px; height: 200px; background: white; border-radius: 8px; text-align: center; padding: 20px 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(20px); }
+        /* ENVOLTORIO PRINCIPAL */
+        .envelope-wrapper {
+            position: relative;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        /* EL SOBRE (Cuerpo) */
+        .envelope {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            background-color: var(--color-sage);
+            border-radius: 6px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* ELEMENTOS INTERNOS (CONTENIDO QUE SALE) */
+        .card-group {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1; /* Dentro del sobre */
+        }
+
+        /* 1. Invitación Principal (Centro) */
+        .card-main {
+            position: absolute;
+            bottom: 10px;
+            width: 280px;
+            height: 200px;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(20px); /* Escondido */
+        }
         .card-main h3 { font-family: var(--font-script); font-size: 2rem; margin: 0; color: var(--color-text); }
         .card-main p { font-family: var(--font-serif); font-size: 0.9rem; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; color: #888; }
         .card-border { border: 1px solid var(--color-gold); height: 100%; width: 100%; position: absolute; top: 0; left: 0; margin: 5px; width: calc(100% - 10px); height: calc(100% - 10px); pointer-events: none; }
-        
-        /* Foto Polaroid */
-        .card-photo { position: absolute; bottom: 10px; right: 30px; width: 120px; height: 140px; background: white; padding: 5px 5px 20px 5px; box-shadow: 0 0 5px rgba(0,0,0,0.2); transform: rotate(5deg) translateY(30px); transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s; z-index: 2; }
+
+        /* 2. Foto Polaroid (Derecha) */
+        .card-photo {
+            position: absolute;
+            bottom: 10px;
+            right: 30px;
+            width: 120px;
+            height: 140px;
+            background: white;
+            padding: 5px 5px 20px 5px; /* Efecto polaroid */
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            transform: rotate(5deg) translateY(30px); /* Escondido */
+            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
+            z-index: 2;
+        }
         .card-photo img { width: 100%; height: 100%; object-fit: cover; filter: sepia(20%); }
-        
-        /* Ticket */
-        .card-ticket { position: absolute; bottom: 10px; left: 20px; width: 130px; height: 100px; background: #fdfdfd; border: 1px dashed var(--color-sage); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 0 5px rgba(0,0,0,0.1); transform: rotate(-5deg) translateY(30px); transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s; z-index: 3; }
+
+        /* 3. Pase/Ticket (Izquierda) */
+        .card-ticket {
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            width: 130px;
+            height: 100px;
+            background: #fdfdfd;
+            border: 1px dashed var(--color-sage);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            transform: rotate(-5deg) translateY(30px); /* Escondido */
+            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
+            z-index: 3;
+        }
         .card-ticket span { font-family: var(--font-serif); font-size: 0.7rem; color: #666; }
         .card-ticket strong { font-family: var(--font-serif); font-size: 0.9rem; color: var(--color-gold); line-height: 1; margin-top: 5px; }
-        
-        .pocket { position: absolute; bottom: 0; left: 0; width: 0; height: 0; border-left: 160px solid var(--color-sage); border-right: 160px solid var(--color-sage-dark); border-top: 110px solid transparent; border-bottom: 110px solid transparent; border-bottom-color: var(--color-sage); z-index: 4; border-radius: 0 0 6px 6px; }
-        .flap { position: absolute; top: 0; left: 0; width: 0; height: 0; border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 130px solid var(--color-sage-dark); transform-origin: top; transition: transform 0.6s ease-in-out, z-index 0.4s; z-index: 5; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
-        .wax-seal { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); width: 55px; height: 55px; background: radial-gradient(circle at 30% 30%, #ffd700, #C5A059); border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.4); z-index: 6; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: rgba(255,255,255,0.8); cursor: pointer; transition: transform 0.3s; }
-        .wax-seal:hover { transform: translate(-50%, -50%) scale(1.1); }
-        .envelope-wrapper.open .wax-seal { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
-        .envelope-wrapper.open .flap { transform: rotateX(180deg); z-index: 0; }
-        .envelope-wrapper.open .card-main { transform: translateY(-120px); z-index: 2; }
-        .envelope-wrapper.open .card-photo { transform: translateY(-80px) rotate(15deg) translateX(40px); z-index: 3; }
-        .envelope-wrapper.open .card-ticket { transform: translateY(-90px) rotate(-10deg) translateX(-20px); z-index: 3; }
 
-        /* --- CONTENEDOR GENERAL --- */
-        .container {
-            background-color: var(--color-bg); width: 95%; max-width: 500px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15); border-radius: 12px;
-            overflow: hidden; position: relative; padding-bottom: 60px;
+        /* TAPAS DEL SOBRE */
+        /* Bolsillo frontal */
+        .pocket {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 160px solid var(--color-sage);
+            border-right: 160px solid var(--color-sage-dark);
+            border-top: 110px solid transparent;
+            border-bottom: 110px solid transparent;
+            border-bottom-color: var(--color-sage);
+            z-index: 4; /* Encima de las cartas */
+            border-radius: 0 0 6px 6px;
+        }
+        
+        /* Solapa superior */
+        .flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 130px solid var(--color-sage-dark); /* Color un poco más oscuro para profundidad */
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out, z-index 0.4s;
+            z-index: 5; /* Encima de todo al inicio */
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
         }
 
+        /* Sello */
+        .wax-seal {
+            position: absolute;
+            top: 55%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55px; height: 55px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #C5A059);
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            z-index: 6;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .wax-seal:hover { transform: translate(-50%, -50%) scale(1.1); }
+
+        /* --- ANIMACIONES DE APERTURA --- */
+        .envelope-wrapper.open .wax-seal {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 0; /* Se va al fondo */
+        }
+        /* Movimiento de las cartas hacia afuera */
+        .envelope-wrapper.open .card-main {
+            transform: translateY(-120px); /* Sube mucho */
+            z-index: 2;
+        }
+        .envelope-wrapper.open .card-photo {
+            transform: translateY(-80px) rotate(15deg) translateX(40px); /* Sube y rota derecha */
+            z-index: 3;
+        }
+        .envelope-wrapper.open .card-ticket {
+            transform: translateY(-90px) rotate(-10deg) translateX(-20px); /* Sube y rota izquierda */
+            z-index: 3;
+        }
+
+
+        /* --- CONTENEDOR PRINCIPAL (WEB) --- */
+        .container {
+            background-color: var(--color-bg);
+            width: 95%;
+            max-width: 500px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 60px;
+        }
         .floating-bar { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 100; opacity: 0; transition: opacity 1s ease; }
         .fab { width: 50px; height: 50px; background-color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s ease; text-decoration: none; color: var(--color-gold); font-size: 1.2rem; border: 1px solid rgba(0,0,0,0.05); }
         .fab:hover { transform: scale(1.1); }
@@ -95,8 +248,6 @@
         .delay-200 { transition-delay: 200ms; }
         .delay-400 { transition-delay: 400ms; }
         .couple-photo-container { text-align: center; padding-top: 40px; background-color: var(--color-bg); }
-        
-        /* FOTO PRINCIPAL REDONDA */
         .couple-photo { width: 220px; height: 220px; object-fit: cover; border-radius: 50%; border: 3px solid var(--color-gold); box-shadow: 0 10px 25px rgba(184, 158, 104, 0.2); filter: contrast(105%) sepia(5%); }
         .section-img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
         .decoration { text-align: center; color: var(--color-sage); font-size: 1.8rem; padding: 15px 0; opacity: 0.7; }
@@ -133,8 +284,10 @@
 <body>
 
     <div id="overlay">
+        
         <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
             <div class="envelope">
+                
                 <div class="card-group">
                     <div class="card-main">
                         <div class="card-border"></div>
@@ -142,20 +295,24 @@
                         <p>21 . 02 . 2026</p>
                         <p style="font-size: 0.6rem; margin-top: 60px;">¡Nos Casamos!</p>
                     </div>
+
                     <div class="card-photo">
-                        <img src="boda.jpg" alt="Foto" onerror="this.src='https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=300&auto=format&fit=crop'">
+                        <img src="https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=300&auto=format&fit=crop" alt="Foto">
                     </div>
+
                     <div class="card-ticket">
                         <span>Pase para:</span>
                         <strong>Familia y Amigos</strong>
                         <span style="margin-top: 10px; font-size: 0.6rem;">ADMIT ONE</span>
                     </div>
                 </div>
+
                 <div class="flap"></div>
                 <div class="pocket"></div>
                 <div class="wax-seal" id="waxSeal">❤️</div>
             </div>
         </div>
+
         <h1 class="intro-names">Andrea & Iván</h1>
         <p style="font-family: var(--font-serif); letter-spacing: 2px; color: #888; font-size: 0.9rem;">TOCA EL SELLO PARA ABRIR</p>
     </div>
@@ -173,26 +330,23 @@
     </div>
 
     <div class="container">
-        
         <div class="couple-photo-container">
-             <img src="boda.jpg" alt="Andrea e Iván" class="couple-photo animate-hidden" onerror="this.src='https://images.unsplash.com/photo-1625329999094-56c263f1933c?q=80&w=1000&auto=format&fit=crop'">
+             <img src="boda.jpg" alt="Andrea e Iván" class="couple-photo animate-hidden">
         </div>
-        
         <section style="padding-top: 20px;">
             <div class="decoration animate-hidden">🌿</div>
             <h2 class="animate-hidden delay-200">¡Nos Casamos!</h2>
             <h1 class="animate-hidden delay-400">Andrea e Iván</h1>
             <p class="animate-hidden delay-400">Con la bendición de Dios y nuestros padres</p>
         </section>
-        
         <section class="quote-section animate-hidden">
-            <p class="quote-text">"Más vale dos que uno... ¡la cuerda de tres hilos no se rompe fácilmente!"</p>
+            <p class="quote-text">"Más vale dos que uno, porque obtienen más fruto de su esfuerzo. Si caen, el uno levanta el otro... ¡la cuerda de tres hilos no se rompe fácilmente!"</p>
             <span class="verse-ref">Eclesiastés 4:9-12</span>
         </section>
-        
         <section class="animate-hidden">
             <h3>SAVE THE DATE</h3>
             <div class="date-big">21 . 02 . 2026</div>
+            <p>Contando los días:</p>
             <div id="countdown" class="countdown">
                 <div class="time-box"><span class="time-val" id="days">00</span><span class="time-label">Días</span></div>
                 <div class="time-box"><span class="time-val" id="hours">00</span><span class="time-label">Hs</span></div>
@@ -200,19 +354,18 @@
                 <div class="time-box"><span class="time-val" id="seconds">00</span><span class="time-label">Seg</span></div>
             </div>
         </section>
-        
         <section class="animate-hidden">
             <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=800&auto=format&fit=crop" alt="Lugar" class="section-img">
             <h3>CEREMONIA & RECEPCIÓN</h3>
             <div class="icon-box">💍</div>
             <div style="margin: 30px 0;">
                 <p><strong style="color: var(--color-gold);">HORA</strong><br> 4:00 PM</p>
+                <br>
                 <p><strong style="color: var(--color-gold);">LUGAR</strong><br> Edificio Gran Reserva de Mallorca</p>
                 <p style="font-size: 0.9rem; color: #777;">Calle 25 B # 70B 50</p>
             </div>
             <a href="http://googleusercontent.com/maps.google.com/?q=calle+25+B+%23+70B+50" target="_blank" class="btn btn-outline">Ver Mapa</a>
         </section>
-
         <section class="animate-hidden">
              <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
                 <div style="flex: 1; min-width: 200px;" class="animate-hidden delay-200">
@@ -227,7 +380,6 @@
                 </div>
             </div>
         </section>
-        
         <section class="animate-hidden" style="background-color: #fafafa;">
             <h3>ITINERARIO</h3>
             <div style="margin-bottom: 30px; font-size: 2rem;">🕰️</div>
@@ -238,7 +390,6 @@
                 <div class="timeline-item"><div class="timeline-dot"></div><span class="timeline-time">8:00 PM</span><div class="timeline-title">Fiesta</div><p style="font-size: 0.85rem; margin:0;">¡A bailar!</p></div>
             </div>
         </section>
-
         <section class="rsvp-final animate-hidden">
             <div class="decoration" style="color: white;">🌿</div>
             <h3>CONFIRMACIÓN</h3>
@@ -247,7 +398,6 @@
             <a href="https://wa.me/573017864287?text=Hola,%20confirmo%20asistencia%20a%20la%20boda%20de%20Andrea%20e%20Iván." target="_blank" class="btn" style="background-color: white; color: var(--color-sage); border: none;">WhatsApp</a>
              <div class="decoration" style="color: white; margin-top: 30px;">🌿</div>
         </section>
-
     </div>
 
     <script>
@@ -259,15 +409,20 @@
         }
 
         function openEnvelope() {
+            // Activa la clase 'open' para disparar todas las animaciones CSS
             document.getElementById('envelopeWrapper').classList.add('open');
+            
+            // Tiempo para disfrutar la animación del sobre abriéndose y las cartas saliendo
             setTimeout(() => {
                 document.getElementById('overlay').classList.add('hidden');
                 document.body.classList.add('open');
                 document.getElementById('floatingBar').style.opacity = '1';
+                
                 initAnimations();
+                
                 audio.volume = 0.5; 
                 audio.play().then(() => { isPlaying = true; }).catch(error => { console.log("Autoplay bloqueado."); });
-            }, 2500);
+            }, 2500); // 2.5 segundos para ver bien el efecto abanico
         }
 
         function initAnimations() {
